@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mTextViewCountDown: TextView
     private lateinit var mButtonStartPause: Button
     private lateinit var mButtonReset: Button
-    private lateinit var mButtonSetTimer: Button
+    private lateinit var mButtonLockTimer: Button
 
     private lateinit var mCountDownTimer: CountDownTimer
     private var mTimerRunning = false
@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mButtonResetSetCount: ImageButton
 
     private lateinit var picker: NumberPicker
+    private var number_picker_lock = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         mTextViewCountDown = findViewById(R.id.text_view_countdown)
         mButtonStartPause = findViewById(R.id.button_start_pause)
         mButtonReset = findViewById(R.id.button_reset)
-        mButtonSetTimer = findViewById(R.id.button_set_timer)
+        mButtonLockTimer = findViewById(R.id.button_lock_timer)
 
         mTextViewSetCount = findViewById(R.id.text_view_set_count_number)
         mButtonResetSetCount = findViewById(R.id.button_reset_set_count)
@@ -56,8 +57,12 @@ class MainActivity : AppCompatActivity() {
         picker.displayedValues = pickerValues
 
         picker.setOnValueChangedListener(OnValueChangeListener { numberPicker, i, i1 ->
-            val valuePicker1: Int = picker.value
+            val valuePicker1 : Int = picker.value
+            val pickervalue : Int = pickerValues[valuePicker1].toInt()
             Log.d("picker value", pickerValues[valuePicker1]);
+
+            START_TIME_IN_MS = (pickervalue*1000).toLong()
+            resetTimer()
         })
 
         mButtonStartPause.setOnClickListener(View.OnClickListener {
@@ -72,7 +77,10 @@ class MainActivity : AppCompatActivity() {
 
         mButtonReset.setOnClickListener(View.OnClickListener { resetTimer() })
 
-        mButtonSetTimer.setOnClickListener(View.OnClickListener { setTimer() })
+        mButtonLockTimer.setOnClickListener(View.OnClickListener {
+            picker.isEnabled = number_picker_lock
+            number_picker_lock = !number_picker_lock
+        })
 
         mButtonResetSetCount.setOnClickListener(View.OnClickListener {
             setCount = 0
@@ -125,12 +133,6 @@ class MainActivity : AppCompatActivity() {
         mTimerRunning = false
         mButtonStartPause!!.text = "Start"
         //mButtonReset.setVisibility(View.VISIBLE);
-    }
-
-    private fun setTimer() {
-        Log.d("openDialog", "Before")
-        //val exampleDialog = ExampleDialog()
-        //exampleDialog.show(supportFragmentManager, "example dialog")
     }
 
     fun applyTime(time: Int) {

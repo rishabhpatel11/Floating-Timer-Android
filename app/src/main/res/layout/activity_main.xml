@@ -39,13 +39,13 @@
         />
 
     <Button
-        android:id="@+id/button_set_timer"
+        android:id="@+id/button_lock_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button_start_pause"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="215dp"
-        android:text="Set Timer" />
+        android:text="Lock Scroll" />
 
     <TextView
         android:id="@+id/text_view_set_count_number"
